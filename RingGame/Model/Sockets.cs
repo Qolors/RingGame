@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Google.Protobuf;
 using Google.Protobuf.WellKnownTypes;
 using ProtoBuf;
-using rtech.liveapi;
+using Rtech.Liveapi;
 
 namespace RingGame.Services;
 public class WebSocketServer
@@ -50,16 +50,20 @@ public class WebSocketServer
 
                 using (var stream = new MemoryStream(receiveBuffer.Array))
                 {
-                    LiveAPIEvent live = null;
+                    Any live = null;
 
                     do
                     {
 
-                        live = Serializer.DeserializeWithLengthPrefix<LiveAPIEvent>(stream, PrefixStyle.Fixed32);
+                        CodedInputStream input = new(receiveBuffer.Array);
+                        var x = input.ReadString();
+
+                        Debug.WriteLine(x);
+                        
 
 
-                    } while (live !=null);
-                    Debug.WriteLine(live.gameMessage.ToString());  
+                    } while (live == null);
+                    Debug.WriteLine("wow"); 
                 }
             }
         }
